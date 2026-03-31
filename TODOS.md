@@ -29,31 +29,31 @@ Featureplanung und Implementierungsfortschritt.
 
 ## Phase 2: Auth
 
-- [ ] **Backend Auth**
+- [x] **Backend Auth**
   - [x] `config/config.go` – Env-Vars laden (godotenv)
-  - [ ] `service/auth.go` – bcrypt (Cost 12), Session-Erstellung (UUID, 30d TTL)
-  - [ ] `handler/middleware.go` – `AuthRequired` Middleware, CORS
-  - [ ] `handler/auth.go` – Login, Logout
-  - [ ] Seed-Admin beim ersten Start (`SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD`)
-  - [ ] Session-Cleanup Goroutine (täglich abgelaufene Sessions löschen)
+  - [x] `service/auth.go` – bcrypt (Cost 12), Session-Erstellung (UUID, 30d TTL)
+  - [x] `handler/middleware.go` – `AuthRequired` Middleware, CORS
+  - [x] `handler/auth.go` – Login, Logout
+  - [x] Seed-Admin beim ersten Start (`SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD`)
+  - [x] Session-Cleanup Goroutine (täglich abgelaufene Sessions löschen)
 
-- [ ] **Passwort-Reset**
-  - [ ] `POST /api/auth/forgot-password` – Token generieren (32 Byte hex, 1h gültig)
-  - [ ] `POST /api/auth/reset-password` – Token validieren, Passwort setzen
-  - [ ] Reset-E-Mail senden
+- [x] **Passwort-Reset**
+  - [x] `POST /api/auth/forgot-password` – Token generieren (32 Byte hex, 1h gültig)
+  - [x] `POST /api/auth/reset-password` – Token validieren, Passwort setzen
+  - [x] Reset-E-Mail senden
 
-- [ ] **User-Verwaltung (Admin)**
-  - [ ] `GET /api/users` – alle User auflisten
-  - [ ] `POST /api/users/invite` – User anlegen, temporäres PW per Mail senden
-  - [ ] `PATCH /api/users/:id` – User bearbeiten (Name, Rolle, aktiv/inaktiv)
+- [x] **User-Verwaltung (Admin)**
+  - [x] `GET /api/users` – alle User auflisten
+  - [x] `POST /api/users/invite` – User anlegen, temporäres PW per Mail senden
+  - [x] `PATCH /api/users/:id` – User bearbeiten (Name, Rolle, aktiv/inaktiv)
 
-- [ ] **Frontend Auth**
-  - [ ] Login-Seite (`/login`)
-  - [ ] Auth-Guard / geschützte Routen
-  - [ ] `lib/api.ts` – fetch-Wrapper mit Cookie-Auth
-  - [ ] `lib/stores.ts` – User-Store
-  - [ ] Passwort-vergessen Seite
-  - [ ] Passwort-Reset Seite
+- [x] **Frontend Auth**
+  - [x] Login-Seite (`/login`)
+  - [x] Auth-Guard / geschützte Routen
+  - [x] `lib/api.ts` – fetch-Wrapper mit Cookie-Auth
+  - [x] `lib/stores.ts` – User-Store
+  - [x] Passwort-vergessen Seite
+  - [x] Passwort-Reset Seite
 
 ---
 
