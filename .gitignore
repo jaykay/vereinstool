@@ -25,6 +25,7 @@ backend/db/generated/
 
 # Go
 backend/vereinstool
+backend/tmp/
 
 # OS
 .DS_Store
