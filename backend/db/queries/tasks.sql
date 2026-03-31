@@ -4,6 +4,9 @@ SELECT * FROM tasks WHERE id = ? LIMIT 1;
 -- name: ListTasks :many
 SELECT * FROM tasks ORDER BY created_at DESC;
 
+-- name: ListTasksByMeeting :many
+SELECT * FROM tasks WHERE meeting_id = ? ORDER BY created_at;
+
 -- name: ListTasksByAssignee :many
 SELECT * FROM tasks WHERE assigned_to = ? ORDER BY due_date ASC;
 

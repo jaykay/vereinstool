@@ -97,21 +97,22 @@ Featureplanung und Implementierungsfortschritt.
 
 ## Phase 5: Decisions + Tasks
 
-- [ ] **Decisions (Backend)**
-  - [ ] `POST /api/decisions` – Beschluss erfassen (Text, Ja/Nein/Enthaltung)
-  - [ ] `GET /api/decisions` – Beschluss-Register (filterbar nach Meeting, Datum)
-  - [ ] `PATCH /api/decisions/:id` – Beschluss korrigieren
+- [x] **Decisions (Backend)**
+  - [x] `POST /api/decisions` – Beschluss erfassen (Text, Ja/Nein/Enthaltung)
+  - [x] `GET /api/decisions` – Beschluss-Register (filterbar nach Meeting, Datum)
+  - [x] `PATCH /api/decisions/:id` – Beschluss korrigieren
 
-- [ ] **Tasks (Backend)**
-  - [ ] `POST /api/tasks` – Aufgabe erstellen (Titel, Beschreibung, Zuständiger, Fälligkeit)
-  - [ ] `GET /api/tasks` – Aufgaben filtern (assigned_to, status)
-  - [ ] `PATCH /api/tasks/:id` – Status ändern (open → done/cancelled)
+- [x] **Tasks (Backend)**
+  - [x] `POST /api/tasks` – Aufgabe erstellen (Titel, Beschreibung, Zuständiger, Fälligkeit)
+  - [x] `GET /api/tasks` – Aufgaben filtern (assigned_to, status, meeting_id)
+  - [x] `PATCH /api/tasks/:id` – Status ändern (open → done/cancelled)
 
-- [ ] **Frontend**
-  - [ ] Beschlüsse während Sitzung erfassen (in Sitzungsansicht)
-  - [ ] Beschluss-Register (`/decisions`) – durchsuchbar, filterbar
-  - [ ] Aufgaben erstellen (in Sitzungsansicht)
-  - [ ] Meine Aufgaben (`/tasks`) – offene Aufgaben mit Fälligkeiten
+- [x] **Frontend**
+  - [x] Beschlüsse während Sitzung erfassen (in Sitzungsansicht)
+  - [x] Beschluss-Register (`/decisions`) – durchsuchbar
+  - [x] Aufgaben erstellen (in Sitzungsansicht)
+  - [x] Meine Aufgaben (`/tasks`) – offene Aufgaben mit Fälligkeiten, Überfällig-Markierung
+  - [x] Navigation: Beschlüsse + Aufgaben im Dashboard-Header
 
 ---
 

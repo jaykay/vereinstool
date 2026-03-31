@@ -60,7 +60,13 @@
 	<div class="min-h-screen bg-gray-50">
 		<header class="bg-white shadow-sm border-b border-gray-200">
 			<div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-				<h1 class="text-xl font-bold text-gray-900">Vereinstool</h1>
+				<div class="flex items-center gap-6">
+					<h1 class="text-xl font-bold text-gray-900">Vereinstool</h1>
+					<nav class="flex gap-4 text-sm">
+						<a href="/decisions" class="text-gray-600 hover:text-gray-900">Beschlüsse</a>
+						<a href="/tasks" class="text-gray-600 hover:text-gray-900">Aufgaben</a>
+					</nav>
+				</div>
 				<div class="flex items-center gap-4">
 					<span class="text-sm text-gray-600">{$user.name}</span>
 					<button
