@@ -64,9 +64,10 @@ func (h *MeetingsHandler) Get(w http.ResponseWriter, r *http.Request) {
 
 func (h *MeetingsHandler) Create(w http.ResponseWriter, r *http.Request) {
 	var req struct {
-		Title       string `json:"title"`
-		ScheduledAt string `json:"scheduled_at"`
-		Location    string `json:"location"`
+		Title        string `json:"title"`
+		ScheduledAt  string `json:"scheduled_at"`
+		DurationMins int64  `json:"duration_mins"`
+		Location     string `json:"location"`
 	}
 	if err := readJSON(r, &req); err != nil {
 		jsonError(w, "Ungültige Anfrage", http.StatusBadRequest)
@@ -78,6 +79,10 @@ func (h *MeetingsHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if req.DurationMins <= 0 {
+		req.DurationMins = 90
+	}
+
 	scheduledAt, err := time.Parse(time.RFC3339, req.ScheduledAt)
 	if err != nil {
 		jsonError(w, "Ungültiges Datumsformat (RFC3339 erwartet)", http.StatusBadRequest)
@@ -86,10 +91,11 @@ func (h *MeetingsHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 	user := UserFromContext(r.Context())
 	meeting, err := h.queries.CreateMeeting(r.Context(), generated.CreateMeetingParams{
-		Title:       req.Title,
-		ScheduledAt: scheduledAt,
-		Location:    sql.NullString{String: req.Location, Valid: req.Location != ""},
-		CreatedBy:   user.ID,
+		Title:        req.Title,
+		ScheduledAt:  scheduledAt,
+		DurationMins: req.DurationMins,
+		Location:     sql.NullString{String: req.Location, Valid: req.Location != ""},
+		CreatedBy:    user.ID,
 	})
 	if err != nil {
 		jsonError(w, "Fehler beim Erstellen", http.StatusInternalServerError)
@@ -125,9 +131,10 @@ func (h *MeetingsHandler) Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req struct {
-		Title       *string `json:"title"`
-		ScheduledAt *string `json:"scheduled_at"`
-		Location    *string `json:"location"`
+		Title        *string `json:"title"`
+		ScheduledAt  *string `json:"scheduled_at"`
+		DurationMins *int64  `json:"duration_mins"`
+		Location     *string `json:"location"`
 	}
 	if err := readJSON(r, &req); err != nil {
 		jsonError(w, "Ungültige Anfrage", http.StatusBadRequest)
@@ -136,6 +143,7 @@ func (h *MeetingsHandler) Update(w http.ResponseWriter, r *http.Request) {
 
 	title := existing.Title
 	scheduledAt := existing.ScheduledAt
+	durationMins := existing.DurationMins
 	location := existing.Location
 
 	if req.Title != nil {
@@ -149,15 +157,19 @@ func (h *MeetingsHandler) Update(w http.ResponseWriter, r *http.Request) {
 		}
 		scheduledAt = t
 	}
+	if req.DurationMins != nil {
+		durationMins = *req.DurationMins
+	}
 	if req.Location != nil {
 		location = sql.NullString{String: *req.Location, Valid: *req.Location != ""}
 	}
 
 	err = h.queries.UpdateMeeting(r.Context(), generated.UpdateMeetingParams{
-		Title:       title,
-		ScheduledAt: scheduledAt,
-		Location:    location,
-		ID:          id,
+		Title:        title,
+		ScheduledAt:  scheduledAt,
+		DurationMins: durationMins,
+		Location:     location,
+		ID:           id,
 	})
 	if err != nil {
 		jsonError(w, "Fehler beim Aktualisieren", http.StatusInternalServerError)
@@ -269,12 +281,13 @@ func paramInt64(r *http.Request, name string) (int64, error) {
 
 func meetingResponse(m *generated.Meeting) map[string]any {
 	resp := map[string]any{
-		"id":           m.ID,
-		"title":        m.Title,
-		"scheduled_at": m.ScheduledAt.Format(time.RFC3339),
-		"status":       m.Status,
-		"created_by":   m.CreatedBy,
-		"created_at":   m.CreatedAt.Format(time.RFC3339),
+		"id":            m.ID,
+		"title":         m.Title,
+		"scheduled_at":  m.ScheduledAt.Format(time.RFC3339),
+		"duration_mins": m.DurationMins,
+		"status":        m.Status,
+		"created_by":    m.CreatedBy,
+		"created_at":    m.CreatedAt.Format(time.RFC3339),
 	}
 	if m.Location.Valid {
 		resp["location"] = m.Location.String

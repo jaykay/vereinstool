@@ -16,6 +16,7 @@
 		id: number;
 		title: string;
 		scheduled_at: string;
+		duration_mins: number;
 		location: string | null;
 		status: string;
 		created_by: number;
@@ -88,6 +89,7 @@
 
 	// Task form
 	let showTaskForm = $state(false);
+	let taskTopicId = $state(0);
 	let taskTitle = $state('');
 	let taskDescription = $state('');
 	let taskAssignedTo = $state<number | undefined>(undefined);
@@ -216,12 +218,12 @@
 		taskLoading = true;
 		try {
 			await api.post('/tasks', {
-				meeting_id: Number(id), title: taskTitle,
+				topic_id: taskTopicId, meeting_id: Number(id), title: taskTitle,
 				description: taskDescription || undefined,
 				assigned_to: taskAssignedTo || undefined,
 				due_date: taskDueDate || undefined
 			});
-			taskTitle = ''; taskDescription = ''; taskAssignedTo = undefined; taskDueDate = '';
+			taskTopicId = 0; taskTitle = ''; taskDescription = ''; taskAssignedTo = undefined; taskDueDate = '';
 			showTaskForm = false;
 			await loadTasks();
 		} catch (e) { if (e instanceof ApiError) error = e.message; }
@@ -280,7 +282,7 @@
 				<div class="flex items-start justify-between">
 					<div>
 						<h1 class="text-2xl font-bold text-gray-900">{meeting.title}</h1>
-						<p class="text-gray-600 mt-1">{formatDate(meeting.scheduled_at)}</p>
+						<p class="text-gray-600 mt-1">{formatDate(meeting.scheduled_at)}, {meeting.duration_mins} Min.</p>
 						{#if meeting.location}
 							<p class="text-gray-500 text-sm mt-1">{meeting.location}</p>
 						{/if}
@@ -449,6 +451,10 @@
 
 				{#if showTaskForm}
 					<form onsubmit={submitTask} class="border border-gray-200 rounded-lg p-4 mb-4 space-y-3 bg-gray-50">
+						<select bind:value={taskTopicId} required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+							<option value={0} disabled>Thema wählen...</option>
+							{#each topics as t}<option value={t.id}>{t.title}</option>{/each}
+						</select>
 						<input type="text" bind:value={taskTitle} required placeholder="Aufgabe" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
 						<textarea bind:value={taskDescription} placeholder="Beschreibung (optional)" rows={2} class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
 						<div class="flex gap-3">
@@ -478,6 +484,7 @@
 								<div class="flex-1 min-w-0">
 									<span class="{task.status === 'done' ? 'line-through text-gray-400' : 'text-gray-900'}">{task.title}</span>
 									<div class="flex gap-2 text-xs text-gray-500 mt-0.5">
+										{#if task.topic_id}<span class="text-gray-400">{topicTitle(task.topic_id)}</span>{/if}
 										{#if task.assigned_to}<span>{userName(task.assigned_to)}</span>{/if}
 										{#if task.due_date}<span>Fällig: {new Date(task.due_date).toLocaleDateString('de-DE')}</span>{/if}
 									</div>

@@ -72,6 +72,11 @@ func (h *TasksHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if req.TopicID == nil || *req.TopicID == 0 {
+		jsonError(w, "Thema (topic_id) erforderlich", http.StatusBadRequest)
+		return
+	}
+
 	var dueDate sql.NullTime
 	if req.DueDate != "" {
 		t, err := time.Parse("2006-01-02", req.DueDate)
