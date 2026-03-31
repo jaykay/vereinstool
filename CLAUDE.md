@@ -112,6 +112,12 @@ GET    /api/health
 
 ---
 
+## Arbeitsweise
+
+- **Niemals halluzinieren.** Vor jeder Behauptung ("funktioniert", "existiert", "ist konfiguriert") den Code lesen, den Befehl ausführen, die Logs prüfen. Im Zweifel nachschauen statt raten.
+
+---
+
 ## Konventionen & Entscheidungen
 
 - **Kein ORM** – sqlc generiert typsicheres Go aus SQL. Queries in `db/queries/*.sql`.

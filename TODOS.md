@@ -6,31 +6,31 @@ Featureplanung und Implementierungsfortschritt.
 
 ## Phase 1: Grundgerüst
 
-- [ ] **Projektstruktur anlegen**
-  - [ ] Go-Modul initialisieren (`backend/`)
-  - [ ] SvelteKit init (`frontend/`)
-  - [ ] Tailwind CSS v4 einrichten
-  - [ ] Vite Proxy `/api → :8080` konfigurieren
-  - [ ] `.env.example` anlegen
-  - [ ] `.gitignore` (DB-Dateien, `.env`, `node_modules`, `build/`, `generated/`)
+- [x] **Projektstruktur anlegen**
+  - [x] Go-Modul initialisieren (`backend/`)
+  - [x] SvelteKit init (`frontend/`)
+  - [x] Tailwind CSS v4 einrichten
+  - [x] Vite Proxy `/api → :8080` konfigurieren
+  - [x] `.env.example` anlegen
+  - [x] `.gitignore` (DB-Dateien, `.env`, `node_modules`, `build/`, `generated/`)
 
-- [ ] **Dockerfile + Docker Compose**
-  - [ ] Multi-Stage Dockerfile (Frontend build → Go build → Alpine runtime)
-  - [ ] `docker-compose.yml` für lokale Entwicklung (optional, MailHog)
-  - [ ] Lokaler Build-Test
+- [x] **Dockerfile + Docker Compose**
+  - [x] Multi-Stage Dockerfile (Frontend build → Go build → Alpine runtime)
+  - [x] `docker-compose.yml` für lokale Entwicklung (optional, MailHog)
+  - [x] Lokaler Build-Test
 
-- [ ] **Datenbank**
-  - [ ] Migration `001_init.up.sql` + `001_init.down.sql` schreiben
-  - [ ] `sqlc.yaml` konfigurieren
-  - [ ] SQL-Queries schreiben (`users.sql`, `meetings.sql`, `topics.sql`, `decisions.sql`, `tasks.sql`)
-  - [ ] `sqlc generate` ausführen und prüfen
+- [x] **Datenbank**
+  - [x] Migration `001_init.up.sql` + `001_init.down.sql` schreiben
+  - [x] `sqlc.yaml` konfigurieren
+  - [x] SQL-Queries schreiben (`users.sql`, `meetings.sql`, `topics.sql`, `decisions.sql`, `tasks.sql`)
+  - [x] `sqlc generate` ausführen und prüfen
 
 ---
 
 ## Phase 2: Auth
 
 - [ ] **Backend Auth**
-  - [ ] `config/config.go` – Env-Vars laden (godotenv)
+  - [x] `config/config.go` – Env-Vars laden (godotenv)
   - [ ] `service/auth.go` – bcrypt (Cost 12), Session-Erstellung (UUID, 30d TTL)
   - [ ] `handler/middleware.go` – `AuthRequired` Middleware, CORS
   - [ ] `handler/auth.go` – Login, Logout
@@ -148,7 +148,7 @@ Featureplanung und Implementierungsfortschritt.
 
 - [ ] **Hetzner-Server** provisionieren (CX22)
 - [ ] **Kamal 2** einrichten
-  - [ ] `config/deploy.yml` mit Secrets
+  - [x] `config/deploy.yml` mit Secrets
   - [ ] `.kamal/secrets` anlegen
   - [ ] Docker Registry (Docker Hub oder GHCR)
   - [ ] TLS via Kamal Proxy (automatisch)
