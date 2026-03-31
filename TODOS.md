@@ -86,12 +86,16 @@ Featureplanung und Implementierungsfortschritt.
   - [x] `DELETE /api/topics/:id/vote` – Upvote zurücknehmen
   - [x] Sortierlogik via SQL (vote_count DESC, created_at ASC)
   - [x] `vote_count` bei Vote-Insert/Delete denormalisiert updaten (Transaktion)
+  - [x] `GET /api/topics/pool` – Themenpool (unzugewiesene Topics)
+  - [x] `POST /api/topics/:id/assign` – Pool-Thema einer Sitzung zuweisen
 
 - [x] **Frontend**
   - [x] Thema einreichen (inline-Form in Sitzungsansicht)
   - [x] Themenliste in Sitzungsansicht mit Upvote-Buttons
   - [x] Sortierte Agenda-Ansicht mit Nummerierung + Zeitschätzung
   - [x] Kategorie-Filter (Finanzen, Satzung, Veranstaltungen, Sonstiges)
+  - [x] Themenpool im Dashboard – Themen ohne Sitzung sammeln + voten
+  - [x] Sitzungsansicht: Pool-Themen zur Übernahme vorschlagen
 
 ---
 

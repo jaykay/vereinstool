@@ -48,6 +48,68 @@ func (h *TopicsHandler) ListByMeeting(w http.ResponseWriter, r *http.Request) {
 	jsonOK(w, result)
 }
 
+// ListPool returns unassigned topics (meeting_id IS NULL).
+func (h *TopicsHandler) ListPool(w http.ResponseWriter, r *http.Request) {
+	topics, err := h.queries.ListUnassignedTopics(r.Context())
+	if err != nil {
+		jsonError(w, "Fehler beim Laden", http.StatusInternalServerError)
+		return
+	}
+
+	user := UserFromContext(r.Context())
+	votedTopicIDs, _ := h.queries.ListUserVotesForUnassigned(r.Context(), user.ID)
+	votedSet := make(map[int64]bool, len(votedTopicIDs))
+	for _, id := range votedTopicIDs {
+		votedSet[id] = true
+	}
+
+	result := make([]map[string]any, len(topics))
+	for i, t := range topics {
+		result[i] = topicResponse(&t, votedSet[t.ID])
+	}
+	jsonOK(w, result)
+}
+
+// Assign moves a pool topic to a meeting.
+func (h *TopicsHandler) Assign(w http.ResponseWriter, r *http.Request) {
+	topicID, err := paramInt64(r, "id")
+	if err != nil {
+		jsonError(w, "Ungültige ID", http.StatusBadRequest)
+		return
+	}
+
+	var req struct {
+		MeetingID int64 `json:"meeting_id"`
+	}
+	if err := readJSON(r, &req); err != nil || req.MeetingID == 0 {
+		jsonError(w, "meeting_id erforderlich", http.StatusBadRequest)
+		return
+	}
+
+	topic, err := h.queries.GetTopic(r.Context(), topicID)
+	if err != nil {
+		jsonError(w, "Thema nicht gefunden", http.StatusNotFound)
+		return
+	}
+
+	if topic.MeetingID.Valid {
+		jsonError(w, "Thema ist bereits einer Sitzung zugewiesen", http.StatusConflict)
+		return
+	}
+
+	err = h.queries.AssignTopicToMeeting(r.Context(), generated.AssignTopicToMeetingParams{
+		MeetingID: sql.NullInt64{Int64: req.MeetingID, Valid: true},
+		ID:        topicID,
+	})
+	if err != nil {
+		jsonError(w, "Fehler beim Zuweisen", http.StatusInternalServerError)
+		return
+	}
+
+	updated, _ := h.queries.GetTopic(r.Context(), topicID)
+	jsonOK(w, topicResponse(&updated, false))
+}
+
 func (h *TopicsHandler) Create(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		MeetingID     int64  `json:"meeting_id"`
@@ -61,8 +123,8 @@ func (h *TopicsHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if req.Title == "" || req.MeetingID == 0 {
-		jsonError(w, "Titel und Sitzung erforderlich", http.StatusBadRequest)
+	if req.Title == "" {
+		jsonError(w, "Titel erforderlich", http.StatusBadRequest)
 		return
 	}
 
@@ -72,7 +134,7 @@ func (h *TopicsHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 	user := UserFromContext(r.Context())
 	topic, err := h.queries.CreateTopic(r.Context(), generated.CreateTopicParams{
-		MeetingID:     sql.NullInt64{Int64: req.MeetingID, Valid: true},
+		MeetingID:     sql.NullInt64{Int64: req.MeetingID, Valid: req.MeetingID > 0},
 		Title:         req.Title,
 		Description:   sql.NullString{String: req.Description, Valid: req.Description != ""},
 		Category:      sql.NullString{String: req.Category, Valid: req.Category != ""},

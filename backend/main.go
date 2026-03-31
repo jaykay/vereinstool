@@ -109,11 +109,13 @@ func main() {
 			r.Get("/meetings/{id}/topics", topicsHandler.ListByMeeting)
 
 			// Topics
+			r.Get("/topics/pool", topicsHandler.ListPool)
 			r.Post("/topics", topicsHandler.Create)
 			r.Patch("/topics/{id}", topicsHandler.Update)
 			r.Delete("/topics/{id}", topicsHandler.Delete)
 			r.Post("/topics/{id}/vote", topicsHandler.Vote)
 			r.Delete("/topics/{id}/vote", topicsHandler.Unvote)
+			r.Post("/topics/{id}/assign", topicsHandler.Assign)
 
 			// Decisions
 			r.Post("/decisions", decisionsHandler.Create)

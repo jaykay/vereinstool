@@ -14,3 +14,8 @@ SELECT * FROM votes WHERE topic_id = ?;
 SELECT v.topic_id FROM votes v
 JOIN topics t ON t.id = v.topic_id
 WHERE t.meeting_id = ? AND v.user_id = ?;
+
+-- name: ListUserVotesForUnassigned :many
+SELECT v.topic_id FROM votes v
+JOIN topics t ON t.id = v.topic_id
+WHERE t.meeting_id IS NULL AND v.user_id = ?;

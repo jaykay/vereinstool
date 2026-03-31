@@ -4,6 +4,12 @@ SELECT * FROM topics WHERE id = ? LIMIT 1;
 -- name: ListTopicsByMeeting :many
 SELECT * FROM topics WHERE meeting_id = ? ORDER BY vote_count DESC, created_at ASC;
 
+-- name: ListUnassignedTopics :many
+SELECT * FROM topics WHERE meeting_id IS NULL AND status = 'open' ORDER BY vote_count DESC, created_at ASC;
+
+-- name: AssignTopicToMeeting :exec
+UPDATE topics SET meeting_id = ? WHERE id = ?;
+
 -- name: CreateTopic :one
 INSERT INTO topics (meeting_id, title, description, category, submitted_by, estimated_mins)
 VALUES (?, ?, ?, ?, ?, ?)

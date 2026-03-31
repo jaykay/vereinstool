@@ -97,10 +97,13 @@
 	// Filter
 	let categoryFilter = $state('');
 
+	// Pool topics for assignment
+	let poolTopics = $state<Topic[]>([]);
+
 	const id = $derived(page.params.id);
 
 	onMount(async () => {
-		await Promise.all([loadMeeting(), loadTopics(), loadDecisions(), loadTasks(), loadUsers()]);
+		await Promise.all([loadMeeting(), loadTopics(), loadDecisions(), loadTasks(), loadUsers(), loadPool()]);
 	});
 
 	async function loadMeeting() {
@@ -131,6 +134,18 @@
 
 	async function loadUsers() {
 		try { users = await api.get<{ id: number; name: string }[]>('/users'); } catch {}
+	}
+
+	async function loadPool() {
+		try { poolTopics = await api.get<Topic[]>('/topics/pool'); } catch {}
+	}
+
+	async function assignTopic(topicId: number) {
+		try {
+			await api.post(`/topics/${topicId}/assign`, { meeting_id: Number(id) });
+			poolTopics = poolTopics.filter((t) => t.id !== topicId);
+			await loadTopics();
+		} catch (e) { if (e instanceof ApiError) error = e.message; }
 	}
 
 	async function startMeeting() {
@@ -351,6 +366,25 @@
 							</li>
 						{/each}
 					</ul>
+				{/if}
+
+				<!-- Pool topics to assign -->
+				{#if (meeting?.status === 'open' || meeting?.status === 'active') && poolTopics.length > 0}
+					<div class="mt-4 border-t border-gray-100 pt-4">
+						<h3 class="text-sm font-medium text-gray-500 mb-3">Aus Themenpool übernehmen ({poolTopics.length})</h3>
+						<div class="space-y-2">
+							{#each poolTopics as pt}
+								<div class="flex items-center justify-between bg-gray-50 rounded-md px-3 py-2">
+									<div class="flex items-center gap-2">
+										<span class="text-sm font-semibold text-gray-500">{pt.vote_count}</span>
+										<span class="text-sm text-gray-900">{pt.title}</span>
+										{#if pt.category}<span class="text-xs px-1.5 py-0.5 rounded-full {categoryColor(pt.category)}">{categoryLabel(pt.category)}</span>{/if}
+									</div>
+									<button onclick={() => assignTopic(pt.id)} class="text-xs px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer">Übernehmen</button>
+								</div>
+							{/each}
+						</div>
+					</div>
 				{/if}
 			</div>
 
