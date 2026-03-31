@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+
+# Build output
+frontend/build/
+frontend/.svelte-kit/
+backend/static/
+
+# Database
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Secrets
+.kamal/secrets
+
+# Generated code (rebuild with: cd backend && sqlc generate)
+backend/db/generated/
+
+# Go
+backend/vereinstool
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

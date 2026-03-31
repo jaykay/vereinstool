@@ -1,0 +1,38 @@
+service: vereinstool
+image: jaykay/vereinstool
+
+servers:
+  web:
+    hosts:
+      - TODO
+    labels:
+      traefik.http.routers.vereinstool.rule: Host(`vorstand.flugplatz-uelzen.de`)
+
+proxy:
+  ssl: true
+  host: vorstand.flugplatz-uelzen.de
+
+registry:
+  username: jaykay
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+env:
+  clear:
+    APP_URL: https://vorstand.flugplatz-uelzen.de
+    SMTP_HOST: smtp.mailgun.org
+    SMTP_PORT: "587"
+    SMTP_FROM: vorstand@flugplatz-uelzen.de
+  secret:
+    - SESSION_SECRET
+    - SMTP_USER
+    - SMTP_PASSWORD
+    - SEED_ADMIN_EMAIL
+    - SEED_ADMIN_PASSWORD
+
+volumes:
+  - /var/lib/vereinstool:/data
+
+healthcheck:
+  path: /api/health
+  port: 8080
