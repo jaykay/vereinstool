@@ -77,21 +77,21 @@ Featureplanung und Implementierungsfortschritt.
 
 ## Phase 4: Topics + Voting
 
-- [ ] **Backend**
-  - [ ] `POST /api/topics` – Thema einreichen (Titel, Beschreibung, Kategorie, geschätzte Dauer)
-  - [ ] `PATCH /api/topics/:id` – Thema bearbeiten
-  - [ ] `DELETE /api/topics/:id` – Thema löschen
-  - [ ] `GET /api/meetings/:id/topics` – Themen sortiert nach `vote_count DESC`
-  - [ ] `POST /api/topics/:id/vote` – Upvote abgeben (1 pro User)
-  - [ ] `DELETE /api/topics/:id/vote` – Upvote zurücknehmen
-  - [ ] `service/agenda.go` – Sortierlogik (vote_count, ggf. position Override)
-  - [ ] `vote_count` bei Vote-Insert/Delete denormalisiert updaten
+- [x] **Backend**
+  - [x] `POST /api/topics` – Thema einreichen (Titel, Beschreibung, Kategorie, geschätzte Dauer)
+  - [x] `PATCH /api/topics/:id` – Thema bearbeiten
+  - [x] `DELETE /api/topics/:id` – Thema löschen
+  - [x] `GET /api/meetings/:id/topics` – Themen sortiert nach `vote_count DESC`
+  - [x] `POST /api/topics/:id/vote` – Upvote abgeben (1 pro User)
+  - [x] `DELETE /api/topics/:id/vote` – Upvote zurücknehmen
+  - [x] Sortierlogik via SQL (vote_count DESC, created_at ASC)
+  - [x] `vote_count` bei Vote-Insert/Delete denormalisiert updaten (Transaktion)
 
-- [ ] **Frontend**
-  - [ ] Thema einreichen (`/topics/new`)
-  - [ ] Themenliste in Sitzungsansicht mit Upvote-Buttons
-  - [ ] Sortierte Agenda-Ansicht
-  - [ ] Kategorie-Filter (Finanzen, Satzung, Veranstaltungen, Sonstiges)
+- [x] **Frontend**
+  - [x] Thema einreichen (inline-Form in Sitzungsansicht)
+  - [x] Themenliste in Sitzungsansicht mit Upvote-Buttons
+  - [x] Sortierte Agenda-Ansicht mit Nummerierung + Zeitschätzung
+  - [x] Kategorie-Filter (Finanzen, Satzung, Veranstaltungen, Sonstiges)
 
 ---
 

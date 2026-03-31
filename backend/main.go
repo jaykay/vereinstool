@@ -71,6 +71,7 @@ func main() {
 	authHandler := handler.NewAuth(authService, mailer, cfg)
 	usersHandler := handler.NewUsers(queries, authService, mailer, cfg)
 	meetingsHandler := handler.NewMeetings(queries)
+	topicsHandler := handler.NewTopics(queries, db)
 
 	// Router
 	r := chi.NewRouter()
@@ -103,6 +104,14 @@ func main() {
 			r.Post("/meetings/{id}/close", meetingsHandler.Close)
 			r.Post("/meetings/{id}/attendees", meetingsHandler.AddAttendee)
 			r.Delete("/meetings/{id}/attendees/{userId}", meetingsHandler.RemoveAttendee)
+			r.Get("/meetings/{id}/topics", topicsHandler.ListByMeeting)
+
+			// Topics
+			r.Post("/topics", topicsHandler.Create)
+			r.Patch("/topics/{id}", topicsHandler.Update)
+			r.Delete("/topics/{id}", topicsHandler.Delete)
+			r.Post("/topics/{id}/vote", topicsHandler.Vote)
+			r.Delete("/topics/{id}/vote", topicsHandler.Unvote)
 
 			// Admin-only routes
 			r.Group(func(r chi.Router) {

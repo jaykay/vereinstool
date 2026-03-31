@@ -9,3 +9,8 @@ DELETE FROM votes WHERE topic_id = ? AND user_id = ?;
 
 -- name: ListVotesByTopic :many
 SELECT * FROM votes WHERE topic_id = ?;
+
+-- name: ListUserVotesForMeeting :many
+SELECT v.topic_id FROM votes v
+JOIN topics t ON t.id = v.topic_id
+WHERE t.meeting_id = ? AND v.user_id = ?;
