@@ -59,19 +59,19 @@ Featureplanung und Implementierungsfortschritt.
 
 ## Phase 3: Meetings CRUD
 
-- [ ] **Backend**
-  - [ ] `GET /api/meetings` – alle Sitzungen (gefiltert nach Status)
-  - [ ] `POST /api/meetings` – neue Sitzung erstellen
-  - [ ] `GET /api/meetings/:id` – Sitzungsdetail
-  - [ ] `PATCH /api/meetings/:id` – Sitzung bearbeiten (Titel, Datum, Ort)
-  - [ ] `POST /api/meetings/:id/start` – Status → `active`
-  - [ ] `POST /api/meetings/:id/close` – Status → `closed`
-  - [ ] Teilnehmerverwaltung (`meeting_attendees`)
+- [x] **Backend**
+  - [x] `GET /api/meetings` – alle Sitzungen (gefiltert nach Status)
+  - [x] `POST /api/meetings` – neue Sitzung erstellen
+  - [x] `GET /api/meetings/:id` – Sitzungsdetail
+  - [x] `PATCH /api/meetings/:id` – Sitzung bearbeiten (Titel, Datum, Ort)
+  - [x] `POST /api/meetings/:id/start` – Status → `active`
+  - [x] `POST /api/meetings/:id/close` – Status → `closed`
+  - [x] Teilnehmerverwaltung (`meeting_attendees`)
 
-- [ ] **Frontend**
-  - [ ] Dashboard (`/dashboard`) – Übersicht aktiver/geplanter Sitzungen
-  - [ ] Neue Sitzung erstellen (`/meetings/new`)
-  - [ ] Sitzungsdetail (`/meetings/[id]`) – Live-Agenda, Teilnehmer
+- [x] **Frontend**
+  - [x] Dashboard (`/`) – Übersicht aktiver/geplanter/abgeschlossener Sitzungen
+  - [x] Neue Sitzung erstellen (`/meetings/new`)
+  - [x] Sitzungsdetail (`/meetings/[id]`) – Teilnehmer, Start/Close Actions
 
 ---
 
